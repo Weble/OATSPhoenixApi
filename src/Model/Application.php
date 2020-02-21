@@ -7,12 +7,18 @@ use Tightenco\Collect\Support\Collection;
 
 class Application extends Model
 {
-    use HasIds, HasTranslatableTexts, HasChoices;
+    use HasIds, HasDisplayName, HasTranslatableTexts, HasChoices;
+
+    public function getName(): string
+    {
+        return $this->get('name', '');
+    }
 
     public function getProducts(): Collection
     {
-        return collect($this->get('product', []))->map(function ($item) {
-            return new Product($item);
+        return (new Collection($this->get('product', [])))->mapWithKeys(function ($item) {
+            $product = new Product($item);
+            return [$product->getId() => $product];
         });
     }
 
@@ -21,8 +27,16 @@ class Application extends Model
         return $this->getTranslatableText('fueltype');
     }
 
-    public function getCapacity(): ?Choice
+    public function getCapacities(): ?Choice
     {
         return $this->getChoice('capacity');
+    }
+
+    public function getCapacity(string $unit = ''): string
+    {
+        return implode(" ", array_filter([
+            $this->get('display_capacity'),
+            $unit
+        ]));
     }
 }

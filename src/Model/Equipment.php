@@ -9,6 +9,50 @@ class Equipment extends Item
 {
     use HasIds, HasTranslatableTexts;
 
+    public function getName(): string
+    {
+        return $this->get('display_name_long', '');
+    }
+
+    public function getManufacturer(): string
+    {
+        return $this->get('manufacturer', '');
+    }
+
+    public function getYear(): string
+    {
+        return $this->get('display_year', '');
+    }
+
+    public function getChangeIntervals(): Collection
+    {
+        return (new Collection($this->get('change_intervals', [])))->mapWithKeys(function($interval){
+            $interval = new ChangeInterval($interval);
+            return [$interval->getApplicationId() => $interval];
+        });
+    }
+
+
+    public function getModel(): string
+    {
+        return $this->get('model', '');
+    }
+
+    public function getFuelName(): string
+    {
+        return $this->get('alt_fueltype', $this->getFuelType());
+    }
+
+    public function getFuelType(): string
+    {
+        return $this->getTranslatableText('fueltype');
+    }
+
+    public function getShortName(): string
+    {
+        return $this->get('display_name_short', '');
+    }
+
     public function getLanguage(): ?string
     {
         return $this->get('@language');
@@ -26,16 +70,21 @@ class Equipment extends Item
 
     public function getSeries(): Collection
     {
-        return collect($this->get('series', []))->map(function ($item) {
+        return (new Collection($this->get('series', [])))->map(function ($item) {
             return new TranslatableText($item);
         });
     }
 
-    public function getApplication(): ?Application
+    public function getApplications(): Collection
     {
-        if (!$this->get('application')) {
-            return null;
-        }
-        return new Application($this->get('application'));
+        return (new Collection($this->get('application', [])))->mapWithKeys(function($application){
+            $application = new Application($application);
+            return [$application->getId() => $application];
+        });
+    }
+
+    public function getCapacityUnit(): string
+    {
+        return $this->get('capacity_unit', '');
     }
 }
