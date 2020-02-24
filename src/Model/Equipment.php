@@ -28,10 +28,10 @@ class Equipment extends Item
     {
         return (new Collection($this->get('change_intervals', [])))->mapWithKeys(function($interval){
             $interval = new ChangeInterval($interval);
+            $interval->setApplications($this->getApplications());
             return [$interval->getApplicationId() => $interval];
         });
     }
-
 
     public function getModel(): string
     {

@@ -14,6 +14,24 @@ class Application extends Model
         return $this->get('name', '');
     }
 
+    public function getFullName(): ?string
+    {
+        return implode(" ", array_filter([
+            $this->getDisplayName(),
+            $this->getCoption()
+        ]));
+    }
+
+    public function getCoption(): ?string
+    {
+        return $this->get('display_coption');
+    }
+
+    public function hasProducts(): bool
+    {
+        return $this->getProducts()->count() > 0;
+    }
+
     public function getProducts(): Collection
     {
         return (new Collection($this->get('product', [])))->mapWithKeys(function ($item) {
