@@ -9,6 +9,35 @@ class Application extends Model
 {
     use HasIds, HasDisplayName, HasTranslatableTexts, HasChoices;
 
+    /**
+     * @var Collection
+     */
+    protected $notes;
+
+    /**
+     * @return Collection|AppNote[]
+     */
+    public function getNotes(): Collection
+    {
+        if (!$this->notes) {
+            return new Collection([]);
+        }
+
+        return $this->notes;
+    }
+
+    public function withNotes(Collection $notes): self
+    {
+        $this->notes = new Collection();
+
+        $this->notes = Collection::make($this->get('note_ref', []))->mapWithKeys(function($ref) use ($notes) {
+            $ref = new AppNote($ref);
+            return [$ref->getId() => $notes->get($ref->getId())];
+        })->filter();
+
+        return $this;
+    }
+
     public function getName(): string
     {
         return $this->get('name', '');

@@ -33,6 +33,19 @@ class Equipment extends Item
         });
     }
 
+    public function getAppNotes(): Collection
+    {
+        return (new Collection($this->get('app_note', [])))->mapWithKeys(function($note){
+            $note = new AppNote($note);
+            return [$note->getId() => $note];
+        });
+    }
+
+    public function getOtherNotes(): Collection
+    {
+        return $this->getAppNotes()->whereNull('@note_index');
+    }
+
     public function getModel(): string
     {
         return $this->get('model', '');
@@ -79,6 +92,7 @@ class Equipment extends Item
     {
         return (new Collection($this->get('application', [])))->mapWithKeys(function($application){
             $application = new Application($application);
+            $application->withNotes($this->getAppNotes());
             return [$application->getId() => $application];
         });
     }
