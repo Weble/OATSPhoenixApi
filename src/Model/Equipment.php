@@ -45,7 +45,7 @@ class Equipment extends Item
 
     public function getFuelType(): string
     {
-        return $this->getTranslatableText('fueltype');
+        return $this->getTranslatableText('fueltype') ?: '';
     }
 
     public function getShortName(): string
