@@ -28,11 +28,16 @@ class Application extends Model
 
     public function withNotes(Collection $notes): self
     {
-        $this->notes = new Collection();
+        $this->notes = new Collection([]);
 
         $this->notes = Collection::make($this->get('note_ref', []))->mapWithKeys(function($ref) use ($notes) {
             $ref = new AppNote($ref);
-            return [$ref->getId() => $notes->get($ref->getId())];
+            $note = $notes->get($ref->getId());
+            if (!$note) {
+                return null;
+            }
+
+            return [$ref->getId() => $note];
         })->filter();
 
         return $this;

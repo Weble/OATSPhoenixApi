@@ -43,7 +43,9 @@ class Equipment extends Item
 
     public function getOtherNotes(): Collection
     {
-        return $this->getAppNotes()->whereNull('@note_index');
+        return $this->getAppNotes()->filter(function (AppNote $note) {
+            return !$note->getNoteIndex();
+        });
     }
 
     public function getModel(): string
