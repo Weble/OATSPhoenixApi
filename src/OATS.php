@@ -27,6 +27,8 @@ class OATS
      */
     protected $token;
 
+    protected $language;
+
     public function __construct(string $baseUrl, string $token, ?ClientInterface $client = null)
     {
         $this->baseUrl = $baseUrl;
@@ -37,6 +39,12 @@ class OATS
         }
 
         $this->client = $client;
+    }
+
+    public function setLanguage(string $language): self
+    {
+        $this->language = $language;
+        return $this;
     }
 
     protected function createClient(): ClientInterface
@@ -68,10 +76,16 @@ class OATS
 
     public function get($relativeUri = '/browse')
     {
+        $params = [
+            'token' => $this->getToken()
+        ];
+
+        if ($this->language) {
+            $params['language'] = $this->language;
+        }
+
         $response = $this->client->request('GET', $this->buildUri($relativeUri), [
-            'query' => [
-                'token' => $this->getToken()
-            ]
+            'query' => $params
         ]);
 
         return $this->parseResponse($response);
