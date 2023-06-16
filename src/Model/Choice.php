@@ -2,7 +2,7 @@
 
 namespace Weble\OATSPhoenixApi\Model;
 
-use Tightenco\Collect\Support\Collection;
+use Illuminate\Support\Collection;
 
 class Choice extends Model
 {

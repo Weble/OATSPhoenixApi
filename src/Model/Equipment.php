@@ -3,7 +3,7 @@
 
 namespace Weble\OATSPhoenixApi\Model;
 
-use Tightenco\Collect\Support\Collection;
+use Illuminate\Support\Collection;
 
 class Equipment extends Item
 {

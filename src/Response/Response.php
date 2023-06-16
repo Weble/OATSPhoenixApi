@@ -4,8 +4,8 @@
 namespace Weble\OATSPhoenixApi\Response;
 
 
-use Tightenco\Collect\Contracts\Support\Arrayable;
-use Tightenco\Collect\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use Weble\OATSPhoenixApi\Model\Equipment;
 use Weble\OATSPhoenixApi\Model\Index;
 use Weble\OATSPhoenixApi\OATS;
