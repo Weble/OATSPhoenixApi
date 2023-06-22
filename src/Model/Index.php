@@ -3,7 +3,7 @@
 
 namespace Weble\OATSPhoenixApi\Model;
 
-use Tightenco\Collect\Support\Collection;
+use Illuminate\Support\Collection;
 use Weble\OATSPhoenixApi\OATS;
 use Weble\OATSPhoenixApi\Response\ResponseType;
 
